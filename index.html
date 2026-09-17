@@ -6,30 +6,18 @@
 <title>Agenda Sollução</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#172033;font-family:Arial,Helvetica,sans-serif}
-.wrap{max-width:720px;margin:auto;padding:18px}
-.header{display:flex;align-items:center;gap:14px;margin-bottom:18px}.logo{width:64px;height:64px;object-fit:contain;border-radius:12px;background:#fff}.brand{font-size:22px;font-weight:800}.sub{color:#64748b;font-size:13px;margin-top:3px}
-.bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.month{font-size:18px;font-weight:800}.nav button{border:1px solid #dbe2ea;background:#fff;border-radius:9px;padding:9px 13px;font-weight:700;cursor:pointer}
-.legend{display:flex;gap:12px;color:#64748b;font-size:12px;margin-bottom:10px}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.dow{text-align:center;color:#64748b;font-size:11px;font-weight:800;padding:6px 0}.day{min-height:74px;border:1px solid #e2e8f0;background:#fff;border-radius:11px;padding:8px;text-align:left;cursor:pointer}.day:hover{border-color:#2563eb}.day.available{background:#f0fdf4;border-color:#bbf7d0}.day.full{background:#f1f5f9;color:#64748b;cursor:not-allowed}.num{font-weight:800}.status{display:block;margin-top:25px;font-size:10px;font-weight:800}.available .status{color:#166534}.full .status{color:#64748b}
-.panel{display:none;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin-top:16px}.panel.show{display:block}.panel h2{margin:0;font-size:17px}.muted{color:#64748b;font-size:12px}.form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}.form label{font-size:12px;font-weight:800}.form input,.form select{width:100%;padding:11px;margin-top:5px;border:1px solid #dbe2ea;border-radius:9px;font-size:14px}.fullrow{grid-column:1/-1}.actions{display:flex;justify-content:flex-end;gap:8px}.btn{border:1px solid #dbe2ea;background:#fff;border-radius:9px;padding:11px 14px;font-weight:800;cursor:pointer}.primary{background:#2563eb;color:#fff;border-color:#2563eb}.message{margin-top:10px;font-size:13px}.loading{text-align:center;padding:22px;color:#64748b}
-@media(max-width:520px){.form{grid-template-columns:1fr}.fullrow{grid-column:auto}.day{min-height:62px;padding:6px}.status{margin-top:15px}}
+*{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#172033;font-family:Arial,Helvetica,sans-serif}.wrap{max-width:760px;margin:auto;padding:18px}.header{display:flex;align-items:center;gap:14px;margin-bottom:18px}.logo{width:64px;height:64px;object-fit:contain;border-radius:12px;background:#fff}.brand{font-size:22px;font-weight:800}.sub{color:#64748b;font-size:13px;margin-top:3px}.bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.month{font-size:18px;font-weight:800}.nav button{border:1px solid #dbe2ea;background:#fff;border-radius:9px;padding:9px 13px;font-weight:700;cursor:pointer}.legend{display:flex;gap:12px;color:#64748b;font-size:12px;margin-bottom:10px}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.dow{text-align:center;color:#64748b;font-size:11px;font-weight:800;padding:6px 0}.day{min-height:74px;border:1px solid #e2e8f0;background:#fff;border-radius:11px;padding:8px;text-align:left;cursor:pointer}.day:hover{border-color:#2563eb}.day.available{background:#f0fdf4;border-color:#bbf7d0}.day.booked{background:#eff6ff;border-color:#bfdbfe}.day.full{background:#f1f5f9;color:#64748b}.num{font-weight:800}.status{display:block;margin-top:25px;font-size:10px;font-weight:800}.available .status{color:#166534}.booked .status{color:#1d4ed8}.full .status{color:#64748b}.panel{display:none;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin-top:16px}.panel.show{display:block}.panel h2{margin:0;font-size:18px}.muted{color:#64748b;font-size:12px}.form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}.form label{font-size:12px;font-weight:800}.form input,.form select{width:100%;padding:11px;margin-top:5px;border:1px solid #dbe2ea;border-radius:9px;font-size:14px}.fullrow{grid-column:1/-1}.actions{display:flex;justify-content:flex-end;gap:8px}.btn{border:1px solid #dbe2ea;background:#fff;border-radius:9px;padding:11px 14px;font-weight:800;cursor:pointer}.primary{background:#2563eb;color:#fff;border-color:#2563eb}.message{margin-top:10px;font-size:13px}.loading{text-align:center;padding:22px;color:#64748b}.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#166534;color:#fff;padding:12px 18px;border-radius:10px;font-weight:800;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:20;display:none}.toast.show{display:block}.visit{border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin-top:10px;background:#f8fafc}.visit h3{margin:0 0 8px;font-size:15px}.visit p{margin:5px 0;font-size:13px}.visit .time{font-size:20px;font-weight:900;color:#1d4ed8}.visit .link{display:inline-block;margin-top:8px;text-decoration:none}.summary-title{margin-top:16px!important}.summary-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.empty{padding:10px 0;color:#64748b;font-size:13px}@media(max-width:520px){.form{grid-template-columns:1fr}.fullrow{grid-column:auto}.day{min-height:62px;padding:6px}.status{margin-top:15px}}
 </style>
 </head>
 <body>
+<div id="toast" class="toast" aria-live="polite"></div>
 <div class="wrap">
   <div class="header">
     <img class="logo" src="logo-sollucao.jpg" alt="Sollução Energia">
     <div><div class="brand">AGENDA SOLLUÇÃO</div><div class="sub">Escolha um dia disponível para agendar sua reunião.</div></div>
   </div>
-
-  <div class="bar">
-    <div class="nav">
-      <button id="prev">‹</button>
-      <span class="month" id="month" style="margin:0 10px">Carregando...</span>
-      <button id="next">›</button>
-    </div>
-  </div>
-  <div class="legend">🟢 Disponível <span>⚪ Dia cheio</span></div>
+  <div class="bar"><div class="nav"><button id="prev">‹</button><span class="month" id="month" style="margin:0 10px">Carregando...</span><button id="next">›</button></div></div>
+  <div class="legend">🟢 Disponível <span>🔵 Com agendamento</span> <span>⚪ 3/3 cheio</span></div>
   <div id="calendar" class="calendar"><div class="loading">Carregando agenda...</div></div>
 
   <section id="panel" class="panel">
@@ -38,113 +26,59 @@
     <form id="form" class="form">
       <label>Cliente<input id="cliente" required maxlength="150" placeholder="Nome do cliente"></label>
       <label>Vendedor<input id="vendedor" required maxlength="100" placeholder="Nome do vendedor"></label>
+      <label>Data<input id="dataView" type="date" readonly></label>
+      <label>Horário<input id="horario" type="time" required></label>
       <label>Tipo<select id="tipo"><option>Online</option><option>Presencial</option><option>Visita</option></select></label>
       <label>Link do endereço do cliente<input id="endereco" type="url" maxlength="500" placeholder="Cole o link do Google Maps (opcional)"></label>
       <label class="fullrow">Observação<input id="obs" maxlength="300" placeholder="Opcional"></label>
-      <div class="fullrow actions">
-        <button type="button" class="btn" id="cancel">Cancelar</button>
-        <button class="btn primary" type="submit">Confirmar agendamento</button>
-      </div>
+      <div class="fullrow actions"><button type="button" class="btn" id="cancel">Cancelar</button><button class="btn primary" type="submit">Confirmar agendamento</button></div>
       <div id="msg" class="fullrow message" aria-live="polite"></div>
     </form>
+
+    <div id="summary" style="display:none">
+      <h2 class="summary-title">Agendamento confirmado!</h2>
+      <div id="summaryContent"></div>
+      <div class="summary-actions"><button type="button" class="btn primary" id="closeSummary">Voltar para o calendário</button></div>
+    </div>
+
+    <div id="dayVisits" style="display:none">
+      <h2 id="visitsTitle" class="summary-title">Reuniões do dia</h2>
+      <div id="visitsContent"></div>
+      <div class="summary-actions"><button type="button" class="btn" id="newFromDay">+ Agendar outra</button><button type="button" class="btn" id="closeVisits">Fechar</button></div>
+    </div>
   </section>
 </div>
 
 <script>
-const SUPABASE_URL = "https://xyjsfiopdxczzvzbegrg.supabase.co";
-const SUPABASE_KEY = "sb_publishable_QdRQrBl4Uoh4-OSERZcYzw_sUZi_1tA";
-const LIMITE_POR_DIA = 3;
-
-const clientReady = SUPABASE_URL.startsWith("http") && !SUPABASE_KEY.includes("COLE_AQUI");
-const db = clientReady ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
-let view = new Date();
-let selectedDate = null;
-let counts = {};
-
-const meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-const dias = ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];
-const pad = n => String(n).padStart(2,"0");
-const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-
-function showMessage(text, error=false){
-  const el=document.getElementById("msg");
-  el.textContent=text;
-  el.style.color=error?"#b91c1c":"#166534";
-}
-
-async function loadMonth(){
-  const y=view.getFullYear(), m=view.getMonth();
-  document.getElementById("month").textContent=`${meses[m]} ${y}`;
-  if(!db){ counts={}; render(); return; }
-  const first=`${y}-${pad(m+1)}-01`;
-  const lastDate=new Date(y,m+1,0).getDate();
-  const last=`${y}-${pad(m+1)}-${pad(lastDate)}`;
-  const {data,error}=await db.from("agendamentos").select("data").gte("data",first).lte("data",last);
-  if(error){console.error(error); counts={};}
-  else{
-    counts={};
-    (data||[]).forEach(x=>counts[x.data]=(counts[x.data]||0)+1);
-  }
-  render();
-}
-
-function render(){
-  const cal=document.getElementById("calendar");
-  cal.innerHTML="";
-  dias.forEach(d=>{const el=document.createElement("div");el.className="dow";el.textContent=d;cal.appendChild(el);});
-  const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);
-  for(let i=0;i<first.getDay();i++) cal.appendChild(document.createElement("div"));
-  for(let n=1;n<=last.getDate();n++){
-    const d=new Date(y,m,n), k=iso(d), used=counts[k]||0, full=used>=LIMITE_POR_DIA;
-    const b=document.createElement("button");
-    b.type="button"; b.className=`day ${full?"full":"available"}`;
-    b.innerHTML=`<span class="num">${n}</span><span class="status">${full?"⚪ Dia cheio":"🟢 Disponível"}<br>${used}/${LIMITE_POR_DIA} reuniões</span>`;
-    b.disabled=full;
-    if(!full)b.addEventListener("click",()=>openForm(k));
-    cal.appendChild(b);
-  }
-}
-
-function openForm(k){
-  selectedDate=k;
-  const [y,m,d]=k.split("-");
-  document.getElementById("selectedTitle").textContent=`Agendar — ${d}/${m}/${y}`;
-  document.getElementById("selectedInfo").textContent=`Vagas usadas: ${counts[k]||0}/${LIMITE_POR_DIA}`;
-  document.getElementById("panel").classList.add("show");
-  showMessage("");
-  document.getElementById("cliente").focus();
-}
-
+const SUPABASE_URL="https://xyjsfiopdxczzvzbegrg.supabase.co";
+const SUPABASE_KEY="sb_publishable_QdRQrBl4Uoh4-OSERZcYzw_sUZi_1tA";
+const LIMITE_POR_DIA=3;
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let view=new Date(),selectedDate=null,counts={},visitsByDate={};
+const meses=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const dias=["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const brDate=k=>{const [y,m,d]=k.split("-");return `${d}/${m}/${y}`};
+function showMessage(text,error=false){const el=document.getElementById("msg");el.textContent=text;el.style.color=error?"#b91c1c":"#166534";}
+function toast(text){const el=document.getElementById("toast");el.textContent=text;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),2600)}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));}
+function openPanel(){document.getElementById("panel").classList.add("show")}
+function closePanel(){document.getElementById("panel").classList.remove("show")}
+function hideModes(){document.getElementById("form").style.display="none";document.getElementById("summary").style.display="none";document.getElementById("dayVisits").style.display="none";showMessage("")}
+function showForm(k){selectedDate=k;hideModes();document.getElementById("form").style.display="grid";document.getElementById("dataView").value=k;document.getElementById("selectedTitle").textContent=`Agendar — ${brDate(k)}`;document.getElementById("selectedInfo").textContent=`Vagas usadas: ${counts[k]||0}/${LIMITE_POR_DIA}`;openPanel();showMessage("");document.getElementById("cliente").focus()}
+function showVisits(k){selectedDate=k;hideModes();document.getElementById("dayVisits").style.display="block";document.getElementById("visitsTitle").textContent=`Reuniões de ${brDate(k)}`;const arr=visitsByDate[k]||[];const area=document.getElementById("visitsContent");if(!arr.length){area.innerHTML='<div class="empty">Nenhum agendamento encontrado.</div>'}else{area.innerHTML=arr.slice().sort((a,b)=>(a.horario||"").localeCompare(b.horario||"")).map(v=>`<div class="visit"><div class="time">${esc(v.horario||"Sem horário")}</div><h3>${esc(v.cliente)}</h3><p><strong>Vendedor:</strong> ${esc(v.vendedor)}</p><p><strong>Tipo:</strong> ${esc(v.tipo||"—")}</p>${v.endereco_link?`<a class="btn link" href="${esc(v.endereco_link)}" target="_blank" rel="noopener">📍 Abrir localização</a>`:"<p><strong>Localização:</strong> Não informada</p>"}${v.observacao?`<p><strong>Observação:</strong> ${esc(v.observacao)}</p>`:""}</div>`).join("")}document.getElementById("newFromDay").style.display=arr.length>=LIMITE_POR_DIA?"none":"inline-block";openPanel()}
+function showConfirmation(v){hideModes();document.getElementById("summary").style.display="block";document.getElementById("summaryContent").innerHTML=`<div class="visit"><div class="time">${esc(v.horario)}</div><p><strong>Data:</strong> ${brDate(v.data)}</p><p><strong>Cliente:</strong> ${esc(v.cliente)}</p><p><strong>Vendedor:</strong> ${esc(v.vendedor)}</p><p><strong>Tipo:</strong> ${esc(v.tipo||"—")}</p>${v.endereco_link?`<a class="btn link" href="${esc(v.endereco_link)}" target="_blank" rel="noopener">📍 Abrir localização no Google Maps</a>`:"<p><strong>Localização:</strong> Não informada</p>"}${v.observacao?`<p><strong>Observação:</strong> ${esc(v.observacao)}</p>`:""}</div>`;openPanel();toast("✅ Agendamento confirmado!")}
+async function loadMonth(){const y=view.getFullYear(),m=view.getMonth();document.getElementById("month").textContent=`${meses[m]} ${y}`;const first=`${y}-${pad(m+1)}-01`,lastDate=new Date(y,m+1,0).getDate(),last=`${y}-${pad(m+1)}-${pad(lastDate)}`;const {data,error}=await db.from("agendamentos").select("id,data,cliente,vendedor,tipo,endereco_link,observacao,horario,criado_em").gte("data",first).lte("data",last);if(error){console.error(error);counts={};visitsByDate={}}else{counts={};visitsByDate={};(data||[]).forEach(x=>{counts[x.data]=(counts[x.data]||0)+1;(visitsByDate[x.data]??=[]).push(x)})}render()}
+function render(){const cal=document.getElementById("calendar");cal.innerHTML="";dias.forEach(d=>{const el=document.createElement("div");el.className="dow";el.textContent=d;cal.appendChild(el)});const y=view.getFullYear(),m=view.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);for(let i=0;i<first.getDay();i++)cal.appendChild(document.createElement("div"));for(let n=1;n<=last.getDate();n++){const d=new Date(y,m,n),k=iso(d),used=counts[k]||0,full=used>=LIMITE_POR_DIA,b=document.createElement("button");b.type="button";b.className=`day ${full?"full":used?"booked":"available"}`;b.innerHTML=`<span class="num">${n}</span><span class="status">${full?"⚪ Dia cheio":used?"🔵 Com agendamento":"🟢 Disponível"}<br>${used}/${LIMITE_POR_DIA} reuniões</span>`;b.addEventListener("click",()=>used?showVisits(k):showForm(k));cal.appendChild(b)}}
 document.getElementById("prev").onclick=()=>{view.setMonth(view.getMonth()-1);loadMonth()};
 document.getElementById("next").onclick=()=>{view.setMonth(view.getMonth()+1);loadMonth()};
-document.getElementById("cancel").onclick=()=>document.getElementById("panel").classList.remove("show");
-
-document.getElementById("form").addEventListener("submit",async e=>{
-  e.preventDefault();
-  if(!db){showMessage("A agenda ainda não está conectada ao Supabase.",true);return;}
-  if(!selectedDate)return;
-  const used=counts[selectedDate]||0;
-  if(used>=LIMITE_POR_DIA){showMessage("Este dia acabou de ficar cheio.",true);await loadMonth();return;}
-  const endereco=document.getElementById("endereco").value.trim();
-  if(endereco && !/^https?:\/\//i.test(endereco)){showMessage("Cole um link válido do Google Maps ou outro endereço web.",true);return;}
-  const payload={
-    data:selectedDate,
-    cliente:document.getElementById("cliente").value.trim(),
-    vendedor:document.getElementById("vendedor").value.trim(),
-    tipo:document.getElementById("tipo").value,
-    endereco_link:endereco || null,
-    observacao:document.getElementById("obs").value.trim()
-  };
-  const {error}=await db.from("agendamentos").insert(payload);
-  if(error){showMessage("Não foi possível salvar. Tente novamente.",true);console.error(error);return;}
-  document.getElementById("panel").classList.remove("show");
-  document.getElementById("form").reset();
-  await loadMonth();
-});
-
+document.getElementById("cancel").onclick=closePanel;
+document.getElementById("closeSummary").onclick=closePanel;
+document.getElementById("closeVisits").onclick=closePanel;
+document.getElementById("newFromDay").onclick=()=>showForm(selectedDate);
+document.getElementById("form").addEventListener("submit",async e=>{e.preventDefault();if(!selectedDate)return;const used=counts[selectedDate]||0;if(used>=LIMITE_POR_DIA){showMessage("Este dia acabou de ficar cheio.",true);await loadMonth();return}const horario=document.getElementById("horario").value;if(!horario){showMessage("Informe o horário da reunião.",true);return}const endereco=document.getElementById("endereco").value.trim();if(endereco&&!/^https?:\/\//i.test(endereco)){showMessage("Cole um link válido do Google Maps ou outro endereço web.",true);return}const v={data:selectedDate,horario,cliente:document.getElementById("cliente").value.trim(),vendedor:document.getElementById("vendedor").value.trim(),tipo:document.getElementById("tipo").value,endereco_link:endereco||null,observacao:document.getElementById("obs").value.trim()};const {data,error}=await db.from("agendamentos").insert(v).select("id,data,cliente,vendedor,tipo,endereco_link,observacao,horario,criado_em").single();if(error){showMessage("Não foi possível salvar. Tente novamente.",true);console.error(error);return}document.getElementById("form").reset();showConfirmation(data);await loadMonth()});
 loadMonth();
 </script>
 </body>
 </html>
-<!-- atualização -->
